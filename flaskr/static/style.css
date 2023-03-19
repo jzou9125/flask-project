@@ -67,3 +67,10 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #5f788a;
+}
