@@ -3,7 +3,7 @@ from flask import Flask, render_template
 from . import db, auth, home, about
 
 
-def create_app(test_config=None):
+def create_app(test_config=None) -> Flask:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
@@ -17,7 +17,7 @@ def create_app(test_config=None):
         # load the test config if passed in
         app.config.from_mapping(test_config)
 
-    #makes sure that there is an instance folder for the SQlite database file
+    # makes sure that there is an instance folder for the SQlite database file
     try:
         os.makedirs(app.instance_path)
     except OSError:

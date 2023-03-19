@@ -2,6 +2,8 @@ import os
 import tempfile
 
 import pytest
+from flask import Flask
+from flask.testing import FlaskClient
 from flaskr import create_app
 from flaskr.db import get_db, init_db
 
@@ -16,6 +18,7 @@ def app():
     app = create_app(
         {
             "TESTING": True,
+            "WTF_CSRF_ENABLED": False,
             "DATABASE": db_path,
         }
     )
@@ -31,7 +34,7 @@ def app():
 
 
 @pytest.fixture
-def client(app):
+def client(app: Flask) -> FlaskClient:
     return app.test_client()
 
 
@@ -44,13 +47,13 @@ class AuthActions(object):
     def __init__(self, client):
         self._client = client
 
-    def login(self, username="test", password="test"):
+    def login(self, email="a@a", password="test"):
         return self._client.post(
-            "/auth/login", data={"username": username, "password": password}
+            "/login", data={"email": email, "password": password, "submit": True}
         )
 
     def logout(self):
-        return self._client.get("/auth/logout")
+        return self._client.get("/logout")
 
 
 @pytest.fixture

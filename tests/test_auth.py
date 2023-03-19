@@ -1,21 +1,35 @@
 import pytest
-from flask import g, session
+from flask import g, session, Flask
+from flask.testing import FlaskClient
 from flaskr.db import get_db
+from flaskr.forms import RegisterForm
 
 
-def test_register(client, app):
+def test_register(client: FlaskClient, app: Flask):
+    """Checks that registers is a page and that you can register this user"""
     assert client.get("/register").status_code == 200
-    response = client.post(
-        "/auth/register",
-        data={"username": "a", "email": "a@a", "password": "a", "confirm": "a"},
-    )
-    assert response.headers["Location"] == "/auth/login"
+
+    with app.app_context():
+        form = {
+            "username": "ab",
+            "email": "testregister@maybe",
+            "confirm": "a",
+            "password": "a",
+            "submit": True,
+        }
+
+        response = client.post(
+            "/register",
+            data=form,
+        )
+
+    assert response.headers.get("Location") == "/login"
 
     with app.app_context():
         assert (
             get_db()
             .execute(
-                "SELECT * FROM user WHERE username = 'a'",
+                "SELECT * FROM user WHERE username = 'ab'",
             )
             .fetchone()
             is not None
@@ -23,27 +37,35 @@ def test_register(client, app):
 
 
 @pytest.mark.parametrize(
-    ("email", "password", "message"),
+    ("username", "email", "password"),
     (
-        ("", "", b"email is required."),
-        ("a", "", b"Password is required."),
-        ("test", "test", b"already registered"),
+        ("", "", ""),
+        ("test", "a@a", ""),
+        ("test", "a@a", "a"),
     ),
 )
-def test_register_validate_input(client, email, password, message):
+def test_register_validate_input(client, username, email, password):
+    """Checks that registers doesn't work with missing arugments or when someone is registering a username/email already used"""
     response = client.post(
-        "/auth/register", data={"email": email, "password": password}
+        "/register",
+        data={
+            "username": username,
+            "email": email,
+            "password": password,
+            "confirm": password,
+            "submit": "Register",
+        },
     )
-    assert message in response.data
+    assert b"Join Today" in response.data
 
 
 def test_login(client, auth):
-    assert client.get("/auth/login").status_code == 200
+    assert client.get("login").status_code == 200
     response = auth.login()
-    assert response.headers["Location"] == "/"
+    assert response.headers["Location"] == "/home"
 
     with client:
-        client.get("/")
+        client.get("/home")
         assert session["user_id"] == 1
         assert g.user["username"] == "test"
 
@@ -51,8 +73,8 @@ def test_login(client, auth):
 @pytest.mark.parametrize(
     ("email", "password", "message"),
     (
-        ("a", "test", b"Incorrect username."),
-        ("test", "a", b"Incorrect password."),
+        ("a@b", "test", b"Incorrect email."),
+        ("a@a", "a", b"Incorrect password."),
     ),
 )
 def test_login_validate_input(auth, email, password, message):

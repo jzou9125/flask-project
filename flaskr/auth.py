@@ -46,6 +46,10 @@ def login():
             session["is_admin"] = is_admin
             return redirect(url_for("home.home"))
         flash(error)
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"{field}: {error}")
 
     return render_template("auth/login.html", form=form)
 
@@ -69,6 +73,10 @@ def register():
             flash(f"Either the email or username is used already")
         else:
             return redirect(url_for("auth.login"))
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                print(f"{field}: {error}")
     return render_template("auth/register.html", form=form)
 
 
@@ -87,7 +95,7 @@ def load_logged_in_user():
 @bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("login"))
+    return redirect(url_for("auth.login"))
 
 
 def create_admin():
