@@ -7,11 +7,15 @@
   </h1>
 {% endblock header %}
 {% block content %}
-  <form method="post">
-    {{ form.hidden_tag() }}
-    <label for="username">{{ form.email.label }}</label>
-    {{ form.email }}
-    <label for="password">{{ form.password.label }}</label>
-    {{ form.password }} {{ form.submit }}
-  </form>
+  {% if session["user"] %}
+    <div class="loggedin">You are logged in</div>
+  {% else %}
+    <form method="post">
+      {{ form.hidden_tag() }}
+      <label for="username">{{ form.email.label }}</label>
+      {{ form.email }}
+      <label for="password">{{ form.password.label }}</label>
+      {{ form.password }} {{ form.submit }}
+    </form>
+  {% endif %}
 {% endblock content %}

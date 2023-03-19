@@ -15,7 +15,7 @@ from flaskr.db import get_db
 from .forms import LoginForm, RegisterForm
 
 
-bp = Blueprint("auth", __name__, url_prefix="/auth")
+bp = Blueprint("auth", __name__)
 
 
 @bp.route("/login", methods=("GET", "POST"))
@@ -36,7 +36,7 @@ def login():
         if error is None:
             session.clear()
             session["user_id"] = user["id"]
-            return redirect(url_for("index"))
+            return redirect(url_for("home"))
 
         flash(error)
 
