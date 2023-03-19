@@ -4,6 +4,7 @@ import tempfile
 import pytest
 from flask import Flask
 from flask.testing import FlaskClient
+
 from flaskr import create_app
 from flaskr.db import get_db, init_db
 

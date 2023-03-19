@@ -1,6 +1,7 @@
 import pytest
-from flask import g, session, Flask
+from flask import Flask, g, session
 from flask.testing import FlaskClient
+
 from flaskr.db import get_db
 
 # register users

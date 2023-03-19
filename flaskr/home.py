@@ -1,10 +1,7 @@
-from flask import (
-    Blueprint,
-    render_template,
-    session,
-)
+from flask import Blueprint, render_template, session
 
 from flaskr.db import get_db
+
 bp = Blueprint("home", __name__)
 
 @bp.route("/", methods=("GET", "POST"))

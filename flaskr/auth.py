@@ -1,5 +1,3 @@
-import functools
-
 from flask import (
     Blueprint,
     flash,
@@ -11,9 +9,10 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-from flaskr.db import get_db
-from .forms import LoginForm, RegisterForm
 
+from flaskr.db import get_db
+
+from .forms import LoginForm, RegisterForm
 
 bp = Blueprint("auth", __name__)
 
