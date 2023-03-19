@@ -68,9 +68,51 @@ h6 {
   isolation: isolate;
 }
 
-nav {
+.main-nav {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background-color: #5f788a;
+}
+
+.left-nav {
+  display: flex;
+  align-items: baseline;
+  flex: 1 1 0%;
+}
+
+.left-nav > * {
+  padding: 20px 20px 10px 4%;
+}
+
+.right-nav > * {
+  padding: 20px 20px 10px 20px;
+}
+
+main {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+
+.content {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-right: 40px;
+}
+
+.content > *:not(#submit) {
+  padding: 2% 4% 2% 4%;
+}
+
+.content > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.sidebar > * {
+  padding: 10px;
 }
