@@ -11,16 +11,18 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash, generate_password_hash
-
 from flaskr.db import get_db
+from .forms import LoginForm, RegisterForm
+
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 @bp.route("/login", methods=("GET", "POST"))
 def login():
-    if request.method == "POST":
-        username = request.form["username"]
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = request.form["email"]
         password = request.form["password"]
         db = get_db()
         error = None
@@ -40,7 +42,7 @@ def login():
 
         flash(error)
 
-    return render_template("auth/login.html")
+    return render_template("auth/login.html", form=form)
 
 
 @bp.route("/register", methods=("GET", "POST"))
