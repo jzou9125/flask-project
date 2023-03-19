@@ -2,7 +2,7 @@
 {% block header %}
   <h1>
     {% block title %}
-      Register
+      Join Today
     {% endblock title %}
   </h1>
 {% endblock header %}
@@ -16,4 +16,8 @@
       {% endif %}
     {% endfor %}
   </form>
+  <div>
+    <p>Already Have An Account?</p>
+    <a href="{{ url_for('auth.login') }}">Log In</a>
+  </div>
 {% endblock content %}

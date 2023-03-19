@@ -5,33 +5,27 @@
 - Flaskr</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <nav>
-  <h1>Flaskr</h1>
-  <ul>
-    {% if g.user %}
-      <li>
-        <span>{{ g.user['username'] }}</span>
-      </li>
-      <li>
-        <a href="{{ url_for('auth.logout') }}">Log Out</a>
-      {% else %}
-      </li>
-      <li>
-        <a href="{{ url_for('auth.register') }}">Register</a>
-      </li>
-      <li>
-        <a href="{{ url_for('auth.login') }}">Log In</a>
-      {% endif %}
-    </li>
-  </ul>
+  <h1>Flask Blog</h1>
+  <p>Home</p>
+  <p>About</p>
+  <a href="{{ url_for('auth.login') }}">Log In</a>
+  <a href="{{ url_for('auth.register') }}">Register</a>
 </nav>
 <section class="content">
   <header>
     {% block header %}
     {% endblock header %}
   </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
   {% block content %}
   {% endblock content %}
+</section>
+<section class="sidebar">
+  <h1>Our Sidebar</h1>
+  <p>You can put any information here you'd like</p>
+  <ul>
+    <li>Latest Post</li>
+    <li>Announcements</li>
+    <li>Calendars</li>
+    <li>etc</li>
+  </ul>
 </section>
