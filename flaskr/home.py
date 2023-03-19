@@ -5,10 +5,7 @@ from flask import (
 )
 
 from flaskr.db import get_db
-
-
 bp = Blueprint("home", __name__)
-
 
 @bp.route("/", methods=("GET", "POST"))
 @bp.route("/home", methods=("GET", "POST"))
