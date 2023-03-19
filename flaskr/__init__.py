@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template
-from . import db, auth
+from . import db, auth, home
 
 
 def create_app(test_config=None):
@@ -23,12 +23,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route("/")
-    @app.route("/home")
-    def home():
-        return "yes"
-
     db.init_app(app)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(home.bp)
 
     return app
