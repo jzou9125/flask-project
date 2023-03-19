@@ -2,7 +2,8 @@ import pytest
 from flask import g, session, Flask
 from flask.testing import FlaskClient
 from flaskr.db import get_db
-from flaskr.forms import RegisterForm
+
+# register users
 
 
 def test_register(client: FlaskClient, app: Flask):
@@ -59,6 +60,9 @@ def test_register_validate_input(client, username, email, password):
     assert b"Join Today" in response.data
 
 
+# user login
+
+
 def test_login(client, auth):
     assert client.get("login").status_code == 200
     response = auth.login()
@@ -88,3 +92,16 @@ def test_logout(client, auth):
     with client:
         auth.logout()
         assert "user_id" not in session
+
+
+# test admin login
+def test_admin_login(client, auth):
+    """check that you can log in with admin credentials and that there is a table inside it"""
+    response = client.post(
+        "/login", data={"email": "admin@a", "password": "admin", "submit": True}
+    )
+
+    assert response.headers.get("Location") == "/home"
+    response = client.get(response.headers.get("Location"))
+
+    assert b"table" in response.data
