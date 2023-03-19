@@ -1,6 +1,8 @@
 import os
-from flask import Flask, render_template
-from . import db, auth, home, about
+
+from flask import Flask
+
+from . import about, auth, db, home
 
 
 def create_app(test_config=None) -> Flask:
