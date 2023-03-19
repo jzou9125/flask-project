@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-  {% if session.get(is_admin) %}
+  {% if is_admin %}
+    <table>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+        </tr>
+      {% endfor %}
+    </table>
   {% else %}
     <div class="user-logged-in">You have been logged in!</div>
   {% endif %}
