@@ -73,6 +73,7 @@ h6 {
   justify-content: space-between;
   align-items: center;
   background-color: #5f788a;
+  color: white;
 }
 
 .left-nav {
@@ -109,10 +110,23 @@ main {
   flex-direction: column;
 }
 
+.content > form > label {
+  padding: 10px 0;
+}
+
+.content > form > #submit {
+  margin: 20px auto 0 auto;
+}
+
 .sidebar {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .sidebar > * {
   padding: 10px;
+}
+
+.user-logged-in {
+  background-color: lightgreen;
+  color: green;
 }

@@ -1,1 +1,7 @@
 {% extends "base.html" %}
+{% block content %}
+  {% if session.get(is_admin) %}
+  {% else %}
+    <div class="user-logged-in">You have been logged in!</div>
+  {% endif %}
+{% endblock content %}

@@ -27,17 +27,24 @@ def login():
         db = get_db()
         error = None
         user = db.execute("SELECT * FROM user WHERE email = ?", (email,)).fetchone()
+        is_admin = False
 
         if user is None:
-            error = "Incorrect email."
+            user = db.execute(
+                "SELECT * FROM admin WHERE email = ?", (email,)
+            ).fetchone()
+            if user:
+                is_admin = True
+            if user is None:
+                error = "Incorrect email."
         elif not check_password_hash(user["password"], password):
             error = "Incorrect password."
 
         if error is None:
             session.clear()
             session["user_id"] = user["id"]
+            session["is_admin"] = is_admin
             return redirect(url_for("home.home"))
-
         flash(error)
 
     return render_template("auth/login.html", form=form)
@@ -59,10 +66,9 @@ def register():
             )
             db.commit()
         except db.IntegrityError:
-            flash(f"User {username} is already registered.")
+            flash(f"Either the email or username is used already")
         else:
             return redirect(url_for("auth.login"))
-
     return render_template("auth/register.html", form=form)
 
 
@@ -81,4 +87,16 @@ def load_logged_in_user():
 @bp.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("login"))
+
+
+def create_admin():
+    db = get_db()
+    try:
+        db.execute(
+            "INSERT INTO Admin (username, email, password) VALUES (?, ?, ?)",
+            ("admin", "admin@admin", generate_password_hash("admin")),
+        )
+        db.commit()
+    except db.IntegrityError:
+        flash(f"Either the email or username is used already")
