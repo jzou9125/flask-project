@@ -4,6 +4,7 @@ from flask import current_app, g
 
 
 def get_db():
+    """Singleton-esque function that returns database connection"""
     if "db" not in g:
         g.db = sqlite3.connect(
             current_app.config["DATABASE"], detect_types=sqlite3.PARSE_DECLTYPES
