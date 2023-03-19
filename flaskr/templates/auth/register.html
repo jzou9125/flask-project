@@ -2,7 +2,12 @@
 <h1>{% block title %}Register{% endblock %}</h1>
 {% endblock %} {% block content %}
 <form method="post">
-  {{form.hidden_tag()}} {% for field in form %} {% if field.name != 'csrf_token'
-  %} {{field.label}} {{field}} {% endif %} {% endfor %}
+  {{form.hidden_tag()}} 
+  {% for field in form %} 
+    {% if field.name != 'csrf_token'%} 
+        {{field.label}} 
+        {{field}} 
+    {% endif %} 
+{% endfor %}
 </form>
 {% endblock %}

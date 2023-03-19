@@ -22,16 +22,14 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        username = request.form["email"]
+        email = request.form["email"]
         password = request.form["password"]
         db = get_db()
         error = None
-        user = db.execute(
-            "SELECT * FROM user WHERE username = ?", (username,)
-        ).fetchone()
+        user = db.execute("SELECT * FROM user WHERE email = ?", (email,)).fetchone()
 
         if user is None:
-            error = "Incorrect username."
+            error = "Incorrect email."
         elif not check_password_hash(user["password"], password):
             error = "Incorrect password."
 
@@ -61,7 +59,7 @@ def register():
             )
             db.commit()
         except db.IntegrityError:
-            error = f"User {username} is already registered."
+            flash(f"User {username} is already registered.")
         else:
             return redirect(url_for("auth.login"))
 
